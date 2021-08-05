@@ -10,7 +10,8 @@ build: Dockerfile
 	docker build -t $(NAME) .
 
 run:
-	docker run --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=yes $(NAME)
+	# docker run --rm -e MYSQL_DATABASE=database -e MYSQL_ALLOW_EMPTY_PASSWORD=yes $(NAME)
+	docker run --rm -v $(realpath .)/etc/my.cnf:/etc/my.cnf -e MYSQL_ALLOW_EMPTY_PASSWORD=yes $(NAME)
 
 check:
 	test -n "$(CONTAINER)"
@@ -20,7 +21,7 @@ check:
 
 login:
 	test -n "$(CONTAINER)"
-	docker exec -it $(CONTAINER) mysql -u root -p
+	docker exec -it $(CONTAINER) mysql -u root
 
 stop:
 	test -n "$(CONTAINER)"
